@@ -9,7 +9,7 @@ import datetime
 def getchromedriver(root_path = "./asset"):
     try:
         ChromeDriverPath = str(ChromeDriverManager(log_level=0).install())
-        with open(root_path + "\\ChromeDriverPath.txt", "w") as file:
+        with open(root_path + "/ChromeDriverPath.txt", "w") as file:
             file.write(ChromeDriverPath)
             file.close()
         return ChromeDriverPath
@@ -26,7 +26,7 @@ def init_chrome_driver(root_path = "./asset"):
     # chrome_options.headless = True
 
     try:
-        with open(root_path + "\\ChromeDriverPath.txt", "r") as file:
+        with open(root_path + "/ChromeDriverPath.txt", "r") as file:
             ChromeDriverPath = file.readline()
             file.close()
         svc = Service(ChromeDriverPath)
@@ -64,7 +64,11 @@ def crawling_chungyak():
                 df = pd.concat([df, new_one], ignore_index=True)
 
     now = datetime.datetime.now()
-    df.to_csv(f"./{now.strftime('%Y-%m-%d')}.csv")
+    df.to_csv(f"./{now.strftime('%Y-%m-%d')}.csv", encoding='utf-8', index=False)
+
+    popup = browser.find_element_by_tag_name('iframe')
+    browser.switch_to.frame(popup)
+    soup = browser.page_source
 
 
-crawling_chungyak()
+# crawling_chungyak()
